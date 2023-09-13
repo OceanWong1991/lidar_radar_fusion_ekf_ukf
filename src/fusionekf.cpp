@@ -3,12 +3,12 @@
 FusionEKF::FusionEKF() {
   this->initialized = false;
 
-  this->lidar_R = MatrixXd(this->lidar_n, this->lidar_n);
-  this->radar_R = MatrixXd(this->radar_n, this->radar_n);
-  this->lidar_H = MatrixXd(this->lidar_n, this->n);
+  this->lidar_R = MatrixXd(this->lidar_n, this->lidar_n);   // * lidar 噪声矩阵
+  this->radar_R = MatrixXd(this->radar_n, this->radar_n);   // * radar 噪声矩阵
+  this->lidar_H = MatrixXd(this->lidar_n, this->n);     // * lidar 转换矩阵
 
-  this->P = MatrixXd(this->n, this->n);
-  this->F = MatrixXd::Identity(this->n, this->n);
+  this->P = MatrixXd(this->n, this->n);               // * 协方差矩阵
+  this->F = MatrixXd::Identity(this->n, this->n);   // * 状态转移矩阵，初始化为单位矩阵
   this->Q = MatrixXd::Zero(this->n, this->n);
 
   this->lidar_R << 0.0225, 0.0, 0.0, 0.0225;
@@ -89,6 +89,9 @@ void FusionEKF::compute(const DataPoint& data) {
   this->KF.update(z, H, Hx, R);
 }
 
-void FusionEKF::process(const DataPoint& data) { this->initialized ? this->compute(data) : this->start(data); }
+void FusionEKF::process(const DataPoint& data) 
+{ 
+  this->initialized ? this->compute(data) : this->start(data); 
+}
 
 VectorXd FusionEKF::get() const { return this->KF.get(); }

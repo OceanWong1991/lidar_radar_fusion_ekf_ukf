@@ -2,12 +2,12 @@
 
 void KalmanFilter::start(
     const int nin, const VectorXd& xin, const MatrixXd& Pin, const MatrixXd& Fin, const MatrixXd& Qin) {
-  this->n = nin;
-  this->I = MatrixXd::Identity(this->n, this->n);
-  this->x = xin;
-  this->P = Pin;
-  this->F = Fin;
-  this->Q = Qin;
+  this->n = nin;    // * 数据维度
+  this->I = MatrixXd::Identity(this->n, this->n);   // * 单位矩阵
+  this->x = xin;  // * 变量值
+  this->P = Pin;  // * 协方差矩阵
+  this->F = Fin;  // * 状态转移矩阵
+  this->Q = Qin;  // * 协方差噪声
 }
 
 void KalmanFilter::setQ(const MatrixXd& Qin) { this->Q = Qin; }
@@ -25,18 +25,18 @@ void KalmanFilter::predict() {
 }
 
 void KalmanFilter::update(const VectorXd& z, const MatrixXd& H, const VectorXd& Hx, const MatrixXd& R) {
-  const MatrixXd PHt = this->P * H.transpose();
-  const MatrixXd S = H * PHt + R;
-  const MatrixXd K = PHt * S.inverse();
-  VectorXd y = z - Hx;
+  const MatrixXd PHt = this->P * H.transpose(); 
+  const MatrixXd S = H * PHt + R;     // * 测量协方差矩阵更新 S = H * P' * (H.t) + R
+  const MatrixXd K = PHt * S.inverse(); // * 卡尔曼增益 K = P' * (H.t) * (S.i)
+  VectorXd y = z - Hx;  // * 误差值， 通过矩阵 H 将状态变量转换成与传感器同样的单位
 
   // Assume this is radar measurement
   // y(1) is an angle (phi), it shoulde be normalized
   // refer to the comment at the bottom of this file
   if (y.size() == 3) y(1) = atan2(sin(y(1)), cos(y(1)));
 
-  this->x = this->x + K * y;
-  this->P = (this->I - K * H) * this->P;
+  this->x = this->x + K * y;    // * 测量更新
+  this->P = (this->I - K * H) * this->P;  // * 协方差矩阵更新
 }
 
 /*

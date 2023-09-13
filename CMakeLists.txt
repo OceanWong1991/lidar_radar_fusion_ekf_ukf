@@ -3,7 +3,7 @@ project(ExtendedKF)
 cmake_minimum_required(VERSION 3.5)
 add_definitions(-std=c++0x)
 
-include_directories("/usr/include/eigen3")
+include_directories("/home/neo/Workspace/code/ParkingSlotDetection/libs/eigen-3.3.8")
 include_directories(include)
 
 set(SRC_EKF src/main_ekf.cpp 
