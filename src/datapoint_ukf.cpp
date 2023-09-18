@@ -18,7 +18,7 @@ void DataPoint::set(const long long timestamp, const DataPointType& data_type, c
 
 VectorXd DataPoint::get() const { return this->raw; }
 
-// * 初始化状态
+// * 获取当前状态
 VectorXd DataPoint::get_state() const {
   VectorXd state(NX);
 
