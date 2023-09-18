@@ -86,8 +86,9 @@ void UKF::GenerateSigmaPoints(MatrixXd* Xsig_out) {
 
 
 
-/**
+/* *
  * UKF::AugmentedSigmaPoints:
+ * 扩增 SigmaPoints
  */
 void UKF::AugmentedSigmaPoints(MatrixXd* Xsig_out) {
 
@@ -181,7 +182,7 @@ void UKF::AugmentedSigmaPoints(MatrixXd* Xsig_out) {
 
 
 
-/**
+/* *
  * UKF::SigmaPointPrediction:
  */
 void UKF::SigmaPointPrediction(MatrixXd* Xsig_out) {
@@ -278,7 +279,7 @@ void UKF::SigmaPointPrediction(MatrixXd* Xsig_out) {
 
 
 
-/**
+/* *
  * UKF::PredictMeanAndCovariance:
  */
 void UKF::PredictMeanAndCovariance(VectorXd* x_out, MatrixXd* P_out) {
