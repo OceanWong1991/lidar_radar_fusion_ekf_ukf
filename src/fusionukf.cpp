@@ -3,7 +3,7 @@
 FusionUKF::FusionUKF() { this->initialized = false; }
 
 void FusionUKF::initialize(const DataPoint& data) {
-  this->x = data.get_state();            // 5
+  this->x = data.get_state();            //* 5, px, py, 0.0, 0.0, 0.0
   this->P = MatrixXd::Identity(NX, NX);  // 5 x 5
   this->timestamp = data.get_timestamp();
   this->initialized = true;
@@ -18,12 +18,12 @@ void FusionUKF::update(const DataPoint& data) {
   // get the time difference in seconds
   double dt = (data.get_timestamp() - this->timestamp) / 1.0e6;
 
-  // STATE PREDICTION
+  // * 状态预测 STATE PREDICTION
   // get predicted state and covariance of predicted state, predicted sigma points in state space
   this->statePredictor.process(this->x, this->P, dt);
-  this->x = this->statePredictor.getx();
-  this->P = this->statePredictor.getP();
-  sigma_x = this->statePredictor.get_sigma();
+  this->x = this->statePredictor.getx();    // * 获取状态预测量
+  this->P = this->statePredictor.getP();    // * 获取状态预测，协方差矩阵
+  sigma_x = this->statePredictor.get_sigma();   // * 获取Sigma Points
 
   // MEASUREMENT PREDICTION
   // get predicted measurement, covariance of predicted measurement, predicted sigma points in measurement space

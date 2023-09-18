@@ -24,8 +24,8 @@ class FusionUKF {
   long long timestamp;
   double nis;
 
-  VectorXd x = VectorXd(NX);
-  MatrixXd P = MatrixXd(NX, NX);
+  VectorXd x = VectorXd(NX);    // * 当前状态值
+  MatrixXd P = MatrixXd(NX, NX);    // * 协方差矩阵
   StatePredictor statePredictor;
   MeasurementPredictor measurementPredictor;
   StateUpdater stateUpdater;

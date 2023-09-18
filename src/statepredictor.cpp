@@ -1,7 +1,7 @@
 #include "ukf/statepredictor.h"
 
 StatePredictor::StatePredictor() {}
-
+// * 计算 扩增SigmaPoints  
 MatrixXd StatePredictor::compute_augmented_sigma(const VectorXd& current_x, const MatrixXd& current_P) {
   MatrixXd augmented_sigma = MatrixXd::Zero(NAUGMENTED, NSIGMA);  // 7 x 15
   VectorXd augmented_x = VectorXd::Zero(NAUGMENTED);              // 7
@@ -115,9 +115,13 @@ MatrixXd StatePredictor::predict_P(const MatrixXd& predicted_sigma, const Vector
 }
 
 void StatePredictor::process(VectorXd& current_x, MatrixXd& current_P, double dt) {
+  // * 1. 获取扩增Sigma
   MatrixXd augmented_sigma = compute_augmented_sigma(current_x, current_P);  // 7 x 15
+  // * 2. 根据扩增Sigma 预测Sigma
   this->sigma = predict_sigma(augmented_sigma, dt);                          // 5 x 15
+  // * 3. 基于 Sigma 求 均值X
   this->x = predict_x(this->sigma);                                          // 5
+  // * 4. 基于 Sigma，均值X，求协方差矩阵
   this->P = predict_P(this->sigma, this->x);                                 // 5 x 5
 }
 
