@@ -25,7 +25,7 @@ void KalmanFilter::predict() {
 }
 
 void KalmanFilter::update(const VectorXd& z, const MatrixXd& H, const VectorXd& Hx, const MatrixXd& R) {
-  const MatrixXd PHt = this->P * H.transpose(); 
+  const MatrixXd PHt = this->P * H.transpose();  // * 注: H.t 为H矩阵的转置
   const MatrixXd S = H * PHt + R;     // * 测量协方差矩阵更新 S = H * P' * (H.t) + R
   const MatrixXd K = PHt * S.inverse(); // * 卡尔曼增益 K = P' * (H.t) * (S.i)
   VectorXd y = z - Hx;  // * 误差值， 通过矩阵 H 将状态变量转换成与传感器同样的单位
